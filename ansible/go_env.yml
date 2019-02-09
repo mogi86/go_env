@@ -1,0 +1,8 @@
+---
+- hosts: go_env
+  connection: docker
+  roles:
+    - yum
+    - timezone
+    - go
+    - go_get

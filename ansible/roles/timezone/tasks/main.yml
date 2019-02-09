@@ -1,0 +1,6 @@
+- name: set timezone to Asia/Tokyo
+  copy:
+    remote_src: true
+    src: /usr/share/zoneinfo/Japan
+    dest: /etc/localtime
+  tags: timezone

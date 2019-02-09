@@ -1,0 +1,9 @@
+- name: check dep exist
+  stat: path=/var/www/go/bin/dep
+  register: is_exist_dep
+  tags: go_get
+
+- name: install dep
+  shell: /bin/bash -lc "go get -u github.com/golang/dep/cmd/dep"
+  when: not is_exist_dep.stat.exists
+  tags: go_get

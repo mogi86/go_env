@@ -1,0 +1,52 @@
+- name: check /usr/local/go1.11 exist
+  stat: path=/usr/local/go1.11
+  register: is_exist_go
+  tags: go
+
+- name: download go
+  get_url:
+    url: https://dl.google.com/go/go1.11.linux-amd64.tar.gz
+    dest: /tmp/go1.11.linux-amd64.tar.gz
+  when: not is_exist_go.stat.exists
+  tags: go
+
+- name: install go
+  shell: /bin/bash -lc "tar xf go1.11.linux-amd64.tar.gz"
+  args:
+    chdir: /tmp/
+  when: not is_exist_go.stat.exists
+  tags: go
+
+- name: mv go directory
+  shell: /bin/bash -lc "mv /tmp/go /usr/local/go1.11"
+  when: not is_exist_go.stat.exists
+  tags: go
+
+- name: symlink go
+  file:
+    src: /usr/local/go1.11
+    dest: /usr/local/go
+    state: link
+  tags: go
+
+- name: add PATH
+  lineinfile: >
+    dest="/etc/profile"
+    line="export PATH=/usr/local/go/bin:$PATH"
+  tags: go
+
+- name: source /etc/profile
+  shell: /bin/bash -lc "source /etc/profile"
+  tags: go
+
+- name: add GOPATH
+  lineinfile: >
+    dest="/etc/profile"
+    line="export GOPATH=/var/www/go"
+  tags: go
+
+- name: add GOPATH/bin to PATH
+  lineinfile: >
+    dest="/etc/profile"
+    line="export PATH=$GOPATH/bin:$PATH"
+  tags: go

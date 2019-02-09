@@ -1,0 +1,10 @@
+version: "2"
+services:
+  go_env:
+    build: ./docker/go_env
+    container_name: go_env
+    volumes:
+      - $GOPATH:/var/www/go
+    ports:
+      - "8080:8080"
+    tty: true

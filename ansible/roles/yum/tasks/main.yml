@@ -1,0 +1,21 @@
+- name: yum update
+  yum: name=* state=latest
+  tags: yum
+
+- name: install packages
+  yum: name={{item}}
+  with_items:
+    - git
+    - gcc-c++
+    - wget
+    - vi
+    - curl
+    - curl-devel
+    - which
+    - zip
+    - unzip
+  tags: yum
+
+- name: install sudo
+  yum: name=sudo
+  tags: yum
